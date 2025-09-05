@@ -15,8 +15,22 @@ let milkmaidCost = 100;
 let cheeseCost = 500;
 
 //game fundamentals
-let milk = 0;
+var milk = "milk";
 let milkPerClick = 1;
 let milkPerSecond = 0;
 let clicks = 0;
 let growthRate = 1.1;
+
+function loop() {
+    calcMPC();
+    calcMPS();
+    fixRounding();
+    checkAchiev();
+    document.getElementById("milkTotal").innerHTML = "Milk: " + milk;
+    window.requestAnimationFrame(loop);
+}
+
+//start the game loop
+window.onload = function() {
+    window.requestAnimationFrame(loop);
+}
