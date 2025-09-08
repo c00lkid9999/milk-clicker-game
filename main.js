@@ -44,7 +44,7 @@ function calcMPS() {
 }
 
 function fixRounding() {
-    milk = round(milk, 1);
+    milk = Math.round(milk, 1);
 }
 
 function checkAchiev() {
