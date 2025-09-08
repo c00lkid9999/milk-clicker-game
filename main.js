@@ -34,3 +34,19 @@ function loop() {
 window.onload = function() {
     window.requestAnimationFrame(loop);
 }
+
+function calcMPC() {
+    milkPerClick = 1 + (0.1 * cows) + (1 * barns);
+}
+
+function calcMPS() {
+    milkPerSecond = farmhands + (10 * milkmaids);
+}
+
+function fixRounding() {
+    milk = round(milk, 1);
+}
+
+function checkAchiev() {
+    //placeholder
+}
