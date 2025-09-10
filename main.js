@@ -30,7 +30,7 @@ function loop() {
     fixRounding();
     checkAchiev();
     checkRewards();
-    document.getElementById("milkTotal").innerHTML = "Milk: " + milk;
+    updateSpans();
     window.requestAnimationFrame(loop);
 }
 
@@ -43,17 +43,39 @@ window.onload = function() {
 
 //game fundamentals functions
 function checkRewards() {
-    console.log("a)")
     if (milk >= 10 && buildingButtons[0] == false) {
-        const newDiv = document.createElement("div");
-        newDiv.innerHTML = '<button onclick="addCow()">Buy a Cow</button>';
+        //add "buy cow" button
+        const buyCowDiv = document.createElement("div");
+        buyCowDiv.setAttribute("class", "building-button");
+        buyCowDiv.innerHTML = '<button onclick="addCow()">Buy a Cow</button><p>Cost: <span id="cowCost"></span>&emsp;Owned: <span id="cowsOwned"></span></p> <p style="font-size: 8px">0.1 MPC</p>';
         const parentElement = document.getElementById("purchaseButtons");
-        parentElement.appendChild(newDiv);
-        const newDiv2 = document.createElement("div");
-        newDiv2.innerHTML = '<button onclick="addFarmhand()">Buy a Farmhand</button>';
-        parentElement.appendChild(newDiv2);
+        parentElement.appendChild(buyCowDiv);
+        //add "buy farmhand" button
+        const buyFhandDiv = document.createElement("div");
+        buyFhandDiv.setAttribute("class", "building-button");
+        buyFhandDiv.innerHTML = '<button onclick="addFarmhand()">Buy a Farmhand</button><p>Cost: <span id="farmhandCost"></span>&emsp;Owned: <span id="farmhandsOwned"></span></p> <p style="font-size: 8px">1 MPS</p>';
+        parentElement.appendChild(buyFhandDiv);
+        //add MPC/MPS display
+        const cpxDiv = document.createElement("div");
+        cpxDiv.innerHTML = '<p style="font-size: 10px; text-align: center">MPC: <span id="MPC"></span>&emsp;MPS: <span id="MPS"></span></p>';
+        const parentElement2 = document.getElementById("header");
+        parentElement2.appendChild(cpxDiv);
         buildingButtons[0] = true;
     }
+}
+
+function updateSpans() {
+  document.getElementById("milkTotal").innerHTML = "Milk: " + milk;
+  if (buildingButtons[0] == true) {
+    //update building cost/owned spans
+    document.getElementById("cowCost").innerHTML = cowCost;
+    document.getElementById("cowsOwned").innerHTML = cows;
+    document.getElementById("farmhandCost").innerHTML = farmhandCost;
+    document.getElementById("farmhandsOwned").innerHTML = farmhands;
+    //update cps and cpc spans
+    document.getElementById("MPC").innerHTML = milkPerClick;
+    document.getElementById("MPS").innerHTML = milkPerSecond;
+  }
 }
 
 function calcMPC() {
