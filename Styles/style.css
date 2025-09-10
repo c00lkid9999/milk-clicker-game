@@ -12,6 +12,29 @@ button {
     margin: auto;
 }
 
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 10px;
+    background-color: grey;
+}
+
+.left-content, .right-content {
+    display: flex;
+    gap: 5px;
+}
+
+.small-button {
+    border: 3px solid black;
+    margin: 5px;
+    width: 30px;
+    height: 30px;
+    border-radius: 5px;
+    font-size: 15px;
+    text-align: center;
+}
+
 .flex-container {
     display: flex;
     flex-direction: row;

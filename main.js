@@ -21,8 +21,8 @@ let milkPerSecond = 0;
 let clicks = 0;
 let growthRate = 1.1;
 
-//html elements
-let buildingButtons = [false];
+//junlockable html elements
+let unlockElements = [false, false];
 
 function loop() {
     calcMPC();
@@ -43,7 +43,7 @@ window.onload = function() {
 
 //game fundamentals functions
 function checkRewards() {
-    if (milk >= 10 && buildingButtons[0] == false) {
+    if (milk >= 10 && unlockElements[0] == false) {
         //add "buy cow" button
         const buyCowDiv = document.createElement("div");
         buyCowDiv.setAttribute("class", "building-button");
@@ -58,15 +58,29 @@ function checkRewards() {
         //add MPC/MPS display
         const cpxDiv = document.createElement("div");
         cpxDiv.innerHTML = '<p style="font-size: 10px; text-align: center">MPC: <span id="MPC"></span>&emsp;MPS: <span id="MPS"></span></p>';
-        const parentElement2 = document.getElementById("header");
+        const parentElement2 = document.getElementById("milkBanner");
         parentElement2.appendChild(cpxDiv);
-        buildingButtons[0] = true;
+        unlockElements[0] = true;
+    }
+    if (milk >= 100 && unlockElements[1] == false) {
+        //add "buy barn" button
+        const buyBarnDiv = document.createElement("div");
+        buyBarnDiv.setAttribute("class", "building-button");
+        buyBarnDiv.innerHTML = '<button onclick="addBarn()">Buy a Barn</button><p>Cost: <span id="barnCost"></span>&emsp;Owned: <span id="barnsOwned"></span></p> <p style="font-size: 8px">1 MPC</p>';
+        const parentElement = document.getElementById("purchaseButtons");
+        parentElement.appendChild(buyBarnDiv);
+        //add "buy milkmaid" button
+        const buyMmaidDiv = document.createElement("div");
+        buyMmaidDiv.setAttribute("class", "building-button");
+        buyMmaidDiv.innerHTML = '<button onclick="addMilkmaid()">Buy a Milkmaid</button><p>Cost: <span id="milkmaidCost"></span>&emsp;Owned: <span id="milkmaidsOwned"></span></p> <p style="font-size: 8px">10 MPS</p>';
+        parentElement.appendChild(buyMmaidDiv);
+        unlockElements[1] = true;
     }
 }
 
 function updateSpans() {
   document.getElementById("milkTotal").innerHTML = "Milk: " + milk;
-  if (buildingButtons[0] == true) {
+  if (unlockElements[0] == true) {
     //update building cost/owned spans
     document.getElementById("cowCost").innerHTML = cowCost;
     document.getElementById("cowsOwned").innerHTML = cows;
@@ -75,6 +89,13 @@ function updateSpans() {
     //update cps and cpc spans
     document.getElementById("MPC").innerHTML = milkPerClick;
     document.getElementById("MPS").innerHTML = milkPerSecond;
+  }
+  if (unlockElements[1] == true) {
+    //update building cost/owned spans
+    document.getElementById("barnCost").innerHTML = barnCost;
+    document.getElementById("barnsOwned").innerHTML = barns;
+    document.getElementById("milkmaidCost").innerHTML = milkmaidCost;
+    document.getElementById("milkmaidsOwned").innerHTML = milkmaids;
   }
 }
 
