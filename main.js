@@ -5,6 +5,8 @@ let cows = 0;
 let farmhands = 0;
 let barns = 0;
 let milkmaids = 0;
+let pastures = 0;
+let experts = 0;
 let cheesePoints = 0;
 
 //building costs
@@ -12,6 +14,8 @@ let cowCost = 10;
 let farmhandCost = 10;
 let barnCost = 100;
 let milkmaidCost = 100;
+let pastureCost = 1000;
+let expertCost = 1000;
 let cheeseCost = 500;
 
 //game fundamentals
@@ -22,7 +26,7 @@ let clicks = 0;
 let growthRate = 1.1;
 
 //junlockable html elements
-let unlockElements = [false, false];
+let unlockElements = [false, false, false];
 
 function loop() {
     calcMPC();
@@ -76,6 +80,20 @@ function checkRewards() {
         parentElement.appendChild(buyMmaidDiv);
         unlockElements[1] = true;
     }
+    if (milk >= 1000 && unlockElements[2] == false) {
+      //add "buy pasture" button
+      const buyPastureDiv = document.createElement("div");
+      buyPastureDiv.setAttribute("class", "building-button");
+      buyPastureDiv.innerHTML = '<button onclick="addPasture()">Buy a Pasture</button><p>Cost: <span id="pastureCost"></span>&emsp;Owned: <span id="pasturesOwned"></span></p> <p style="font-size: 8px">5 MPC</p>';
+      const parentElement = document.getElementById("purchaseButtons");
+      parentElement.appendChild(buyPastureDiv);
+      //add "buy milk expert" button
+      const buyExpertDiv = document.createElement("div");
+      buyExpertDiv.setAttribute("class", "building-button");
+      buyExpertDiv.innerHTML = '<button onclick="addExpert()">Buy a Milk Expert</button><p>Cost: <span id="expertCost"></span>&emsp;Owned: <span id="expertsOwned"></span></p> <p style="font-size: 8px">50 MPS</p>';
+      parentElement.appendChild(buyExpertDiv);
+      unlockElements[2] = true;
+  }
 }
 
 function updateSpans() {
@@ -97,18 +115,27 @@ function updateSpans() {
     document.getElementById("milkmaidCost").innerHTML = milkmaidCost;
     document.getElementById("milkmaidsOwned").innerHTML = milkmaids;
   }
+  if (unlockElements[2] == true) {
+    //update building cost/owned spans
+    document.getElementById("pastureCost").innerHTML = pastureCost;
+    document.getElementById("pasturesOwned").innerHTML = pastures;
+    document.getElementById("expertCost").innerHTML = expertCost;
+    document.getElementById("expertsOwned").innerHTML = experts;
+  }
 }
 
 function calcMPC() {
-    milkPerClick = 1 + (0.1 * cows) + (1 * barns);
+    milkPerClick = 1 + (0.1 * cows) + (1 * barns) + (5 * pastures);
 }
 
 function calcMPS() {
-    milkPerSecond = farmhands + (10 * milkmaids);
+    milkPerSecond = farmhands + (10 * milkmaids) + (50 * experts);
 }
 
 function fixRounding() {
     milk = Math.round(milk * 10)/10;
+    milkPerClick = Math.round(milkPerClick * 10)/10;
+    milkPerSecond = Math.round(milkPerSecond);
 }
 
 function checkAchiev() {
@@ -165,4 +192,25 @@ function addMilkmaid() {
       milk -= milkmaidCost;
       milkmaidCost = Math.trunc(milkmaidCost * growthRate ** milkmaids);
     }
+}
+
+function addPasture() {
+  if (milk < pastureCost) {
+    console.log("Not enough milk!");
+    //FIXME add notifications
+  } else {
+    pastures += 1;
+    milk -= pastureCost;
+    pastureCost = Math.trunc(pastureCost * growthRate ** pastures);
+  }
+}
+
+function addExpert() {
+  if (milk < expertCost) {
+    console.log("Not enough milk!");
+  } else {
+    experts += 1;
+    milk -= expertCost;
+    expertCost = Math.trunc(expertCost * growthRate ** experts);
+  }
 }
