@@ -1,7 +1,4 @@
 //vars
-let cheesePoints = 0;
-let cheeseCost = 500;
-
 //game fundamentals
 let milk = 0;
 let milkPerClick = 1;
@@ -9,8 +6,9 @@ let milkPerSecond = 0;
 let clicks = 0;
 let growthRate = 1.1;
 
-//unlockable html elements
+//HTML stuff
 let unlockElements = [false, false, false];
+let scene = "milk";
 
 //building constructor function
   var building = function(name, baseCost, type, value) {
@@ -175,22 +173,29 @@ function activateMPS() {
   //Function to switch to achievements menu
   function switchAchiev() {
     hideActiveDivs();
+    document.getElementById("achievScene").style.display = "block";
     alert("Achievements menu is not yet implemented.");
   }
 
   //Function to switch to stats menu
   function switchStats() {
     hideActiveDivs();
-    alert("Stats menu is not yet implemented.");
+    document.getElementById("statsScene").style.display = "block";
   }
 
   //Function to switch to settings menu
   function switchSettings() {
     hideActiveDivs();
-    alert("Settings menu is not yet implemented.");
+    document.getElementById("settingsScene").style.display = "block";
+  }
+
+  //function to switch to milk scene
+  function switchMilk() {
+    hideActiveDivs();
+    document.getElementById("milkScene").style.display = "block";
   }
 
   //Hide divs for a certain screen that must be hidden for other screens
   function hideActiveDivs() {
-    //placeholder
+    document.getElementById(scene + "Scene").style.display = "none";
   }

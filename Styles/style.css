@@ -12,6 +12,13 @@ button {
     margin: auto;
 }
 
+.invisibleButton {
+    background-color: transparent; 
+    border: none; 
+    margin: 0px; 
+    padding: 0px;
+}
+
 .navbar {
     display: flex;
     justify-content: space-between;
