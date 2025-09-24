@@ -28,13 +28,54 @@ let growthRate = 1.1;
 //junlockable html elements
 let unlockElements = [false, false, false];
 
+//building constructor function
+var building = function(name, baseCost, type, value) {
+  this.name = name;
+  this.baseCost = baseCost;
+  this.cost = baseCost;
+  this.owned = 0;
+  this.type = type; //MPC or MPS
+  this.value = value; //# of MPC or MPS boost
+}
+
+//building HTML add
+building.prototype.addHTML = function() {
+  const buyBuildingDiv = document.createElement("div");
+  buyBuildingDiv.setAttribute("class", "building-button");
+  buyBuildingDiv.innerHTML = '<button onclick="'+this.name+'Building.addBuilding()">Buy a '+capitalize(this.name)+'</button><p>Cost: <span id="'+this.name+'Cost"></span>&emsp;Owned: <span id="'+this.name+'sOwned"></span></p> <p style="font-size: 8px">'+this.value+' '+this.type+'</p>';
+  console.log('<button onclick="'+this.onclickFunction+'()">Buy a '+capitalize(this.name)+'</button><p>Cost: <span id="'+this.name+'Cost"></span>&emsp;Owned: <span id="'+this.name+'sOwned"></span></p> <p style="font-size: 8px">'+this.value+' '+this.type+'</p>');
+  const parentElement = document.getElementById("purchaseButtons");
+  parentElement.appendChild(buyBuildingDiv);
+}
+
+//adds one of the building, called when button is pressed
+building.prototype.addBuilding = function() {
+  if (milk < this.cost) {
+    alert("Not enough milk!");
+  } else {
+    this.owned += 1;
+    milk -= this.cost;
+    this.cost = Math.trunc(this.cost * growthRate ** this.owned);
+  }
+}
+
+//update spans related to building
+building.prototype.updateSpans = function() {
+  document.getElementById(this.name+"Cost").innerHTML = this.cost;
+  document.getElementById(this.name+"sOwned").innerHTML = this.owned;
+}
+
+//add buildings
+var cowBuilding = new building("cow", 10, "MPC", 0.1);
+var farmhandBuilding = new building("farmhand", 10, "MPS", 1);
+var barnBuilding = new building("barn", 100, "MPC", 1);
+var milkmaidBuilding = new building("milkmaid", 100, "MPS", 10);
+var pastureBuilding = new building("pasture", 1000, "MPC", 5);
+var expertBuilding = new building("expert", 1000, "MPS", 50);
+
+//game loop
 function loop() {
-    calcMPC();
-    calcMPS();
-    fixRounding();
-    checkAchiev();
-    checkRewards();
-    updateSpans();
+    main(); //call the main function
     window.requestAnimationFrame(loop);
 }
 
@@ -44,66 +85,57 @@ window.onload = function() {
     window.requestAnimationFrame(loop);
 }
 
+//main game function
+function main() {
+  calcMPC();
+  calcMPS();
+  fixRounding();
+  checkAchiev();
+  checkRewards();
+  updateSpans();
+}
 
 //game fundamentals functions
 function checkRewards() {
     if (milk >= 10 && unlockElements[0] == false) {
         //add "buy cow" button
-        const buyCowDiv = document.createElement("div");
-        buyCowDiv.setAttribute("class", "building-button");
-        buyCowDiv.innerHTML = '<button onclick="addCow()">Buy a Cow</button><p>Cost: <span id="cowCost"></span>&emsp;Owned: <span id="cowsOwned"></span></p> <p style="font-size: 8px">0.1 MPC</p>';
-        const parentElement = document.getElementById("purchaseButtons");
-        parentElement.appendChild(buyCowDiv);
+        cowBuilding.addHTML();
         //add "buy farmhand" button
-        const buyFhandDiv = document.createElement("div");
-        buyFhandDiv.setAttribute("class", "building-button");
-        buyFhandDiv.innerHTML = '<button onclick="addFarmhand()">Buy a Farmhand</button><p>Cost: <span id="farmhandCost"></span>&emsp;Owned: <span id="farmhandsOwned"></span></p> <p style="font-size: 8px">1 MPS</p>';
-        parentElement.appendChild(buyFhandDiv);
+        farmhandBuilding.addHTML();
         //add MPC/MPS display
         const cpxDiv = document.createElement("div");
         cpxDiv.innerHTML = '<p style="font-size: 10px; text-align: center">MPC: <span id="MPC"></span>&emsp;MPS: <span id="MPS"></span></p>';
-        const parentElement2 = document.getElementById("milkBanner");
-        parentElement2.appendChild(cpxDiv);
+        const parentElement = document.getElementById("milkBanner");
+        parentElement.appendChild(cpxDiv);
         unlockElements[0] = true;
     }
-    if (milk >= 100 && unlockElements[1] == false) {
+    if (milk >= 50 && unlockElements[1] == false) {
         //add "buy barn" button
-        const buyBarnDiv = document.createElement("div");
-        buyBarnDiv.setAttribute("class", "building-button");
-        buyBarnDiv.innerHTML = '<button onclick="addBarn()">Buy a Barn</button><p>Cost: <span id="barnCost"></span>&emsp;Owned: <span id="barnsOwned"></span></p> <p style="font-size: 8px">1 MPC</p>';
-        const parentElement = document.getElementById("purchaseButtons");
-        parentElement.appendChild(buyBarnDiv);
+        barnBuilding.addHTML();
         //add "buy milkmaid" button
-        const buyMmaidDiv = document.createElement("div");
-        buyMmaidDiv.setAttribute("class", "building-button");
-        buyMmaidDiv.innerHTML = '<button onclick="addMilkmaid()">Buy a Milkmaid</button><p>Cost: <span id="milkmaidCost"></span>&emsp;Owned: <span id="milkmaidsOwned"></span></p> <p style="font-size: 8px">10 MPS</p>';
-        parentElement.appendChild(buyMmaidDiv);
+        milkmaidBuilding.addHTML();
         unlockElements[1] = true;
     }
-    if (milk >= 1000 && unlockElements[2] == false) {
+    if (milk >= 500 && unlockElements[2] == false) {
       //add "buy pasture" button
-      const buyPastureDiv = document.createElement("div");
-      buyPastureDiv.setAttribute("class", "building-button");
-      buyPastureDiv.innerHTML = '<button onclick="addPasture()">Buy a Pasture</button><p>Cost: <span id="pastureCost"></span>&emsp;Owned: <span id="pasturesOwned"></span></p> <p style="font-size: 8px">5 MPC</p>';
-      const parentElement = document.getElementById("purchaseButtons");
-      parentElement.appendChild(buyPastureDiv);
+      pastureBuilding.addHTML();
       //add "buy milk expert" button
-      const buyExpertDiv = document.createElement("div");
-      buyExpertDiv.setAttribute("class", "building-button");
-      buyExpertDiv.innerHTML = '<button onclick="addExpert()">Buy a Milk Expert</button><p>Cost: <span id="expertCost"></span>&emsp;Owned: <span id="expertsOwned"></span></p> <p style="font-size: 8px">50 MPS</p>';
-      parentElement.appendChild(buyExpertDiv);
+      expertBuilding.addHTML();
       unlockElements[2] = true;
   }
+}
+
+//function to capitalize first letter of a string
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
 function updateSpans() {
   document.getElementById("milkTotal").innerHTML = "Milk: " + milk;
   if (unlockElements[0] == true) {
     //update building cost/owned spans
-    document.getElementById("cowCost").innerHTML = cowCost;
-    document.getElementById("cowsOwned").innerHTML = cows;
-    document.getElementById("farmhandCost").innerHTML = farmhandCost;
-    document.getElementById("farmhandsOwned").innerHTML = farmhands;
+    cowBuilding.updateSpans();
+    farmhandBuilding.updateSpans();
     //update cps and cpc spans
     document.getElementById("MPC").innerHTML = milkPerClick;
     document.getElementById("MPS").innerHTML = milkPerSecond;
@@ -125,11 +157,11 @@ function updateSpans() {
 }
 
 function calcMPC() {
-    milkPerClick = 1 + (0.1 * cows) + (1 * barns) + (5 * pastures);
+    milkPerClick = 1 + (0.1 * cowBuilding.owned) + (1 * barnBuilding.owned) + (5 * pastureBuilding.owned);
 }
 
 function calcMPS() {
-    milkPerSecond = farmhands + (10 * milkmaids) + (50 * experts);
+    milkPerSecond = farmhandBuilding.owned + (10 * milkmaidBuilding.owned) + (50 * expertBuilding.owned);
 }
 
 function fixRounding() {
