@@ -10,12 +10,12 @@
     <body>
         <div id="header" class="navbar">
             <div class="left-content">
-                <button class="invisibleButton" onClick="switchAchiev()"><div class="small-button" style="background-color: rgb(255, 255, 100);"><img src="Resources/star-1586412_640.png" style="width: 20px; margin:5px"></div></button>
-                <button class="invisibleButton" onClick="switchStats()"><div class="small-button" style="background-color: rgb(255, 100, 100);" onClick = "switchStats()"><img src="Resources/line-chart.svg" style="width: 20px; margin:5px"></div></button>
-                <button class="invisibleButton" onClick="switchSettings()"><div class="small-button" style="background-color: rgb(153, 153, 153);" onClick = "switchSettings()"><img src="Resources/gear-1077563_640.png" style="width: 20px; margin:5px"></div></button>
+                <button class="invisibleButton" onClick="switchAchiev()"><div class="small-button" style="background-color: rgb(255, 255, 100);"><img src="Resources/star-1586412_640.png" class="icon"></div></button>
+                <button class="invisibleButton" onClick="switchStats()"><div class="small-button" style="background-color: rgb(255, 100, 100);"><img src="Resources/line-chart.svg" class="icon"></div></button>
+                <button class="invisibleButton" onClick="switchSettings()"><div class="small-button" style="background-color: rgb(153, 153, 153);"><img src="Resources/gear-1077563_640.png" class="icon"></div></button>
             </div>
             <div class="right-content">
-                <button class="invisibleButton" onClick="switchMilk()"><div class="small-button" style="background-color: #87cfeb;" onClick = "switchSettings()"><img src="Resources/milk.svg" style="width: 20px; margin:5px"></div></button>
+                <button class="invisibleButton" onClick="switchMilk()"><div class="small-button" style="background-color: #87cfeb;" onClick = "switchSettings()"><img src="Resources/milk.svg" class="icon"></div></button>
             </div>
         </div>
         <div id="milkScene" style="margin: 0px; padding: 0px; display: block;">
@@ -24,6 +24,39 @@
             </div>
             <button style="padding: 10px; background-color: #5dbeff;" onclick="incMilk()"><img src="Resources/Cow-1204968.svg.png" width="100px" style="display: block; margin: auto;">Get Milk</button>
             <div id="purchaseButtons" class="flex-container"></div>
+        </div>
+        <div id="statsScene" style="margin: 0px; padding: 0px; display: none;">
+            <div id="statsBanner">
+                <p style="padding: 10px; font-size: 20px; text-align: center">Statistics</p>
+            </div>
+            <div id="statsContent">
+                <p style="text-align: center"><span id = "totalClicks"></span></p>
+                <p style="text-align: center"><span id = "totalMilk"></span></p>
+                <p style="text-align: center"><span id = "totalBuildings"></span></p>
+            </div>
+        </div>
+        <div id="achievScene" style="margin: 0px; padding: 0px; display: none;">
+            <div id="achievBanner">
+                <p style="padding: 10px; font-size: 20px; text-align: center">Achievements</p>
+            </div>
+            <div id="achievContent" class="flex-container">
+                <p>Achievements have not yet been implemented...</p>
+            </div>
+        </div>
+        <div id="settingsScene" style="margin: 0px; padding: 0px; display: none;">
+            <div id="settingsBanner">
+                <p style="padding: 10px; font-size: 20px; text-align: center">Settings</p>
+            </div>
+            <div id="settingsContent">
+                <div class="flex-container">
+                    <div class="setting">
+                        <button class="settingButton" onclick="exportGame()">Export Game</button>
+                    </div>
+                    <div class="setting">
+                        <button class="settingButton" onclick="importGame()">Import Game</button>
+                    </div>
+                </div>
+            </div>
         </div>
     </body>
 </html>

@@ -3,8 +3,11 @@
 let milk = 0;
 let milkPerClick = 1;
 let milkPerSecond = 0;
+let growthRate = 1.15;
+
+//stats stuff
+let totalMilk = 0;
 let clicks = 0;
-let growthRate = 1.1;
 
 //HTML stuff
 let unlockElements = [false, false, false];
@@ -37,7 +40,7 @@ let scene = "milk";
     } else {
       this.owned += 1;
       milk -= this.cost;
-      this.cost = Math.trunc(this.cost * growthRate ** this.owned);
+      this.cost = Math.trunc(this.baseCost * growthRate ** this.owned);
     }
   }
 
@@ -110,25 +113,32 @@ function main() {
 
   //functino to update all valid spans
   function updateSpans() {
-  document.getElementById("milkTotal").innerHTML = "Milk: " + milk;
-  if (unlockElements[0] == true) {
-    //update tier 1 cost/owned spans
-    cowBuilding.updateSpans();
-    farmhandBuilding.updateSpans();
-    //update cps and cpc spans
-    document.getElementById("MPC").innerHTML = milkPerClick;
-    document.getElementById("MPS").innerHTML = milkPerSecond;
-  }
-  if (unlockElements[1] == true) {
-    //update tier 2 cost/owned spans
-    barnBuilding.updateSpans();
-    milkmaidBuilding.updateSpans();
-  }
-  if (unlockElements[2] == true) {
-    //update tier 3 cost/owned spans
-    pastureBuilding.updateSpans();
-    expertBuilding.updateSpans();
-  }
+    if (scene === 'milk') {
+      document.getElementById("milkTotal").innerHTML = "Milk: " + milk;
+      if (unlockElements[0] == true) {
+        //update tier 1 cost/owned spans
+        cowBuilding.updateSpans();
+        farmhandBuilding.updateSpans();
+        //update cps and cpc spans
+        document.getElementById("MPC").innerHTML = milkPerClick;
+        document.getElementById("MPS").innerHTML = milkPerSecond;
+      }
+      if (unlockElements[1] == true) {
+        //update tier 2 cost/owned spans
+        barnBuilding.updateSpans();
+        milkmaidBuilding.updateSpans();
+      }
+      if (unlockElements[2] == true) {
+        //update tier 3 cost/owned spans
+        pastureBuilding.updateSpans();
+        expertBuilding.updateSpans();
+      }
+    }
+    if (scene === 'stats') {
+      document.getElementById("totalClicks").innerHTML = "Total Clicks: " + clicks;
+      document.getElementById("totalMilk").innerHTML = "Total Milk: " + totalMilk;
+      document.getElementById("totalBuildings").innerHTML = "Total Buildings Owned: " + (cowBuilding.owned + farmhandBuilding.owned + barnBuilding.owned + milkmaidBuilding.owned + pastureBuilding.owned + expertBuilding.owned);
+    }
   }
 
   //calculate the current MPC and apply it
@@ -144,6 +154,7 @@ function main() {
   //fix floating-point rounding errors
   function fixRounding() {
       milk = Math.round(milk * 10)/10;
+      totalMilk = Math.round(totalMilk * 10)/10;
       milkPerClick = Math.round(milkPerClick * 10)/10;
       milkPerSecond = Math.round(milkPerSecond);
   }
@@ -161,12 +172,14 @@ function capitalize(str) {
 //Function to increase milk per second, called every second
 function activateMPS() {
     milk += milkPerSecond;
+    totalMilk += milkPerSecond;
 }
 
 //HTML button functions
   //Function to increase milk when button is clicked
   function incMilk() {
       milk += milkPerClick;
+      totalMilk += milkPerClick;
       clicks += 1;
   }
 
@@ -174,28 +187,58 @@ function activateMPS() {
   function switchAchiev() {
     hideActiveDivs();
     document.getElementById("achievScene").style.display = "block";
-    alert("Achievements menu is not yet implemented.");
+    scene = "achiev";
   }
 
   //Function to switch to stats menu
   function switchStats() {
     hideActiveDivs();
     document.getElementById("statsScene").style.display = "block";
+    scene = "stats";
   }
 
   //Function to switch to settings menu
   function switchSettings() {
     hideActiveDivs();
     document.getElementById("settingsScene").style.display = "block";
+    scene = "settings";
   }
 
   //function to switch to milk scene
   function switchMilk() {
     hideActiveDivs();
     document.getElementById("milkScene").style.display = "block";
+    scene = "milk";
   }
 
   //Hide divs for a certain screen that must be hidden for other screens
   function hideActiveDivs() {
     document.getElementById(scene + "Scene").style.display = "none";
+  }
+
+//Settings Button Functions
+  function exportGame() {
+    exportData = [milk, totalMilk, clicks, cowBuilding.owned, farmhandBuilding.owned, barnBuilding.owned, milkmaidBuilding.owned, pastureBuilding.owned, expertBuilding.owned];
+    exportString = btoa(JSON.stringify(exportData));
+    navigator.clipboard.writeText(exportString);
+    alert("Game data copied to clipboard!");
+  }
+  function importGame() {
+    let importString = prompt("Paste your save data here:");
+    if (importString != null) {
+      try {
+        importData = JSON.parse(atob(importString));
+        milk = importData[0];
+        totalMilk = importData[1];
+        clicks = importData[2];
+        cowBuilding.owned = importData[3];
+        farmhandBuilding.owned = importData[4];
+        barnBuilding.owned = importData[5];
+        milkmaidBuilding.owned = importData[6];
+        pastureBuilding.owned = importData[7];
+        expertBuilding.owned = importData[8];
+      } catch (error) {
+        alert("Error importing save data! Please make sure you pasted it correctly.");
+      }
+    }
   }
