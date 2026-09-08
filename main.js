@@ -5,6 +5,7 @@
  * Get rid of inline styling and add ids (I am a changed man)
  * Rewrite save structure to make it more compact????
  * Make background of cheese page cheese color
+ * Make debug button more sophisticated
  */
 
 //vars
@@ -278,5 +279,11 @@ function activateMPS() {
       } catch (error) {
         alert("Error importing save data! Please make sure you pasted it correctly.");
       }
+    }
+  }
+  function debug() {
+    //ik that anyone can do this, it doesn't need to be secure
+    if (navigator.userAgent = "cool-kid9999") {
+      milk = 10000000000;
     }
   }
