@@ -283,7 +283,7 @@ function activateMPS() {
   }
   function debug() {
     //ik that anyone can do this, it doesn't need to be secure
-    if (navigator.userAgent = "c00lkid9999") {
+    if (navigator.userAgent == "c00lkid9999") {
       milk = 10000000000;
     }
   }
