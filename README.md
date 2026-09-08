@@ -2,6 +2,7 @@
 
 A dairy-themed clicker game, made to practice making games in HTML5 + JavaScript
 
+Play it here: https://c00lkid9999.github.io/milk-clicker-game/
 
 
 # Changelog
