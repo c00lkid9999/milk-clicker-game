@@ -1,34 +1,44 @@
+/*TODO List
+ * Add alts to images
+ * Add achievements
+ * Finish cheese setup
+ * Get rid of inline styling and add ids (I am a changed man)
+ * Rewrite save structure to make it more compact????
+ * Make background of cheese page cheese color
+ */
+
 //vars
 //game fundamentals
 let milk = 0;
 let milkPerClick = 1;
 let milkPerSecond = 0;
 let growthRate = 1.15;
+let cheese = 0;
 
 //stats stuff
 let totalMilk = 0;
 let clicks = 0;
 
 //HTML stuff
-let unlockElements = [false, false, false];
+let unlockElements = [false, false, false, false];
 let scene = "milk";
 
 //building constructor function
-  var building = function(name, baseCost, type, value) {
+var building = function(name, article, baseCost, type, value) {
     this.name = name;
+    this.article = article; //a or an (for making the button)
     this.baseCost = baseCost;
     this.cost = baseCost;
     this.owned = 0;
     this.type = type; //MPC or MPS
     this.value = value; //# of MPC or MPS boost
-  }
+}
 
   //building HTML add
   building.prototype.addHTML = function() {
     const buyBuildingDiv = document.createElement("div");
     buyBuildingDiv.setAttribute("class", "building-button");
-    buyBuildingDiv.innerHTML = '<button onclick="'+this.name+'Building.addBuilding()">Buy a '+capitalize(this.name)+'</button><p>Cost: <span id="'+this.name+'Cost"></span>&emsp;Owned: <span id="'+this.name+'sOwned"></span></p> <p style="font-size: 8px">'+this.value+' '+this.type+'</p>';
-    console.log('<button onclick="'+this.onclickFunction+'()">Buy a '+capitalize(this.name)+'</button><p>Cost: <span id="'+this.name+'Cost"></span>&emsp;Owned: <span id="'+this.name+'sOwned"></span></p> <p style="font-size: 8px">'+this.value+' '+this.type+'</p>');
+    buyBuildingDiv.innerHTML = '<button onclick="'+this.name+'Building.addBuilding()">Buy ' + this.article + ' '+capitalize(this.name)+'</button><p>Cost: <span id="'+this.name+'Cost"></span>&emsp;Owned: <span id="'+this.name+'sOwned"></span></p> <p style="font-size: 8px">'+this.value+' '+this.type+'</p>';
     const parentElement = document.getElementById("purchaseButtons");
     parentElement.appendChild(buyBuildingDiv);
   }
@@ -51,12 +61,12 @@ let scene = "milk";
   }
 
   //add buildings
-  var cowBuilding = new building("cow", 10, "MPC", 0.1);
-  var farmhandBuilding = new building("farmhand", 10, "MPS", 1);
-  var barnBuilding = new building("barn", 100, "MPC", 1);
-  var milkmaidBuilding = new building("milkmaid", 100, "MPS", 10);
-  var pastureBuilding = new building("pasture", 1000, "MPC", 5);
-  var expertBuilding = new building("expert", 1000, "MPS", 50);
+  var cowBuilding = new building("cow", "a", 10, "MPC", 0.1);
+  var farmhandBuilding = new building("farmhand", "a", 10, "MPS", 1);
+  var barnBuilding = new building("barn", "a", 100, "MPC", 1);
+  var milkmaidBuilding = new building("milkmaid", "a", 100, "MPS", 10);
+  var pastureBuilding = new building("pasture", "a", 1000, "MPC", 5);
+  var expertBuilding = new building("expert", "an", 1000, "MPS", 50);
 
 //game loop
 function loop() {
@@ -108,7 +118,17 @@ function main() {
       //add "buy milk expert" button
       expertBuilding.addHTML();
       unlockElements[2] = true;
-  }
+    }
+    if (milk >= 5000 && unlockElements[3] == false) {
+      //add cheese tab
+      const cheeseTab = document.createElement("button");
+      cheeseTab.setAttribute("onclick", "switchCheese()");
+      cheeseTab.setAttribute("class", "invisibleButton");
+      cheeseTab.innerHTML = '<div class="small-button" style="background-color: rgb(255, 225, 58);"><img src="Resources/cheese.png" class="icon"></div>';
+      const parentElement = document.getElementById("header-right");
+      parentElement.appendChild(cheeseTab);
+      unlockElements[3] = true;
+    }
   }
 
   //functino to update all valid spans
@@ -211,6 +231,12 @@ function activateMPS() {
     scene = "milk";
   }
 
+  function switchCheese() {
+    hideActiveDivs();
+    document.getElementById("cheeseScene").style.display = "block";
+    scene = "cheese"
+  }
+
   //Hide divs for a certain screen that must be hidden for other screens
   function hideActiveDivs() {
     document.getElementById(scene + "Scene").style.display = "none";
@@ -218,7 +244,13 @@ function activateMPS() {
 
 //Settings Button Functions
   function exportGame() {
-    exportData = [milk, totalMilk, clicks, cowBuilding.owned, farmhandBuilding.owned, barnBuilding.owned, milkmaidBuilding.owned, pastureBuilding.owned, expertBuilding.owned];
+    exportData = [milk, totalMilk, clicks, 
+                  cowBuilding.owned, cowBuilding.cost, 
+                  farmhandBuilding.owned, farmhandBuilding.cost, 
+                  barnBuilding.owned, barnBuilding.cost, 
+                  milkmaidBuilding.owned, milkmaidBuilding.cost,
+                  pastureBuilding.owned, pastureBuilding.cost,
+                  expertBuilding.owned, expertBuilding.cost];
     exportString = btoa(JSON.stringify(exportData));
     navigator.clipboard.writeText(exportString);
     alert("Game data copied to clipboard!");
@@ -232,11 +264,17 @@ function activateMPS() {
         totalMilk = importData[1];
         clicks = importData[2];
         cowBuilding.owned = importData[3];
-        farmhandBuilding.owned = importData[4];
-        barnBuilding.owned = importData[5];
-        milkmaidBuilding.owned = importData[6];
-        pastureBuilding.owned = importData[7];
-        expertBuilding.owned = importData[8];
+        cowBuilding.cost = importData[4];
+        farmhandBuilding.owned = importData[5];
+        farmhandBuilding.cost = importData[6];
+        barnBuilding.owned = importData[7];
+        barnBuilding.cost = importData[8];
+        milkmaidBuilding.owned = importData[9];
+        milkmaidBuilding.cost = importData[10];
+        pastureBuilding.owned = importData[11];
+        pastureBuilding.cost = importData[12];
+        expertBuilding.owned = importData[13];
+        expertBuilding.cost = importData[14];
       } catch (error) {
         alert("Error importing save data! Please make sure you pasted it correctly.");
       }

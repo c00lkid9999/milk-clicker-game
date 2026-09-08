@@ -6,15 +6,16 @@
         <title>Milk Clicker</title>
         <script defer src="main.js"></script>
         <link rel="stylesheet" type="text/css" href="Styles/style.css">
+        <lin rel="icon" type="image/x-icon" href="Resources/milk.svg">
     </head>
     <body>
         <div id="header" class="navbar">
-            <div class="left-content">
-                <button class="invisibleButton" onClick="switchAchiev()"><div class="small-button" style="background-color: rgb(255, 255, 100);"><img src="Resources/star-1586412_640.png" class="icon"></div></button>
+            <div class="left-content" id="header-left">
+                <button class="invisibleButton" onClick="switchAchiev()"><div class="small-button" style="background-color: rgb(255, 255, 100);"><img src="Resources/star.png" class="icon"></div></button>
                 <button class="invisibleButton" onClick="switchStats()"><div class="small-button" style="background-color: rgb(255, 100, 100);"><img src="Resources/line-chart.svg" class="icon"></div></button>
-                <button class="invisibleButton" onClick="switchSettings()"><div class="small-button" style="background-color: rgb(153, 153, 153);"><img src="Resources/gear-1077563_640.png" class="icon"></div></button>
+                <button class="invisibleButton" onClick="switchSettings()"><div class="small-button" style="background-color: rgb(153, 153, 153);"><img src="Resources/gear.png" class="icon"></div></button>
             </div>
-            <div class="right-content">
+            <div class="right-content" id="header-right">
                 <button class="invisibleButton" onClick="switchMilk()"><div class="small-button" style="background-color: #87cfeb;" onClick = "switchSettings()"><img src="Resources/milk.svg" class="icon"></div></button>
             </div>
         </div>
@@ -22,7 +23,7 @@
             <div id="milkBanner">
                 <p style="padding: 10px; font-size: 20px; text-align: center"><span id = "milkTotal"></span></p>
             </div>
-            <button style="padding: 10px; background-color: #5dbeff;" onclick="incMilk()"><img src="Resources/Cow-1204968.svg.png" width="100px" style="display: block; margin: auto;">Get Milk</button>
+            <button style="padding: 10px; background-color: #5dbeff;" onclick="incMilk()"><img src="Resources/cow.png" width="100px" style="display: block; margin: auto;">Get Milk</button>
             <div id="purchaseButtons" class="flex-container"></div>
         </div>
         <div id="statsScene" style="margin: 0px; padding: 0px; display: none;">
@@ -56,6 +57,14 @@
                         <button class="settingButton" onclick="importGame()">Import Game</button>
                     </div>
                 </div>
+            </div>
+        </div>
+        <div id="cheeseScene" style="margin: 0px; padding: 0px; display: none;">
+            <div id="cheeseBanner">
+                <p style="padding: 10px; font-size: 20px; text-align: center">Cheese</p>
+            </div>
+            <div id="cheeseContent" class="flex-container">
+                <p>Cheese has not yet been implemented...</p>
             </div>
         </div>
     </body>

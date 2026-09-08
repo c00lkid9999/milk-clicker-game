@@ -6,6 +6,10 @@ A dairy-themed clicker game, made to practice making games in HTML5 + JavaScript
 
 # Changelog
 
+### 0.4.0 - Project Resumed! (9/8/26)
+
+Started working on this again! Fixed some minor errors and started adding the first prestige layer! Achievements coming very soon.
+
 #### 0.3.1 - Cleanup No. 1 (9/24/25)
 
 Cleaned up code, started making topbar functional
