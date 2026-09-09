@@ -6,9 +6,13 @@
  * Rewrite save structure to make it more compact????
  * Make background of cheese page cheese color
  * Make debug button more sophisticated
+ * Add animations (aaaaahh scary maybe I won't do this)
  */
 
-//vars
+  /////////////////
+ //  VARIABLES  //
+/////////////////
+
 //game fundamentals
 let milk = 0;
 let milkPerClick = 1;
@@ -20,54 +24,86 @@ let cheese = 0;
 let totalMilk = 0;
 let clicks = 0;
 
-//HTML stuff
+//scenes and progress
 let unlockElements = [false, false, false, false];
 let scene = "milk";
 
+//alerts
+var alerts = [];
+
+  /////////////////
+ //  BUILDINGS  //
+/////////////////
+
 //building constructor function
 var building = function(name, article, baseCost, type, value) {
-    this.name = name;
-    this.article = article; //a or an (for making the button)
-    this.baseCost = baseCost;
-    this.cost = baseCost;
-    this.owned = 0;
-    this.type = type; //MPC or MPS
-    this.value = value; //# of MPC or MPS boost
+  this.name = name;
+  this.article = article; //a or an (for making the button)
+  this.baseCost = baseCost;
+  this.cost = baseCost;
+  this.owned = 0;
+  this.type = type; //MPC or MPS
+  this.value = value; //# of MPC or MPS boost
 }
 
-  //building HTML add
-  building.prototype.addHTML = function() {
-    const buyBuildingDiv = document.createElement("div");
-    buyBuildingDiv.setAttribute("class", "building-button");
-    buyBuildingDiv.innerHTML = '<button onclick="'+this.name+'Building.addBuilding()">Buy ' + this.article + ' '+capitalize(this.name)+'</button><p>Cost: <span id="'+this.name+'Cost"></span>&emsp;Owned: <span id="'+this.name+'sOwned"></span></p> <p style="font-size: 8px">'+this.value+' '+this.type+'</p>';
-    const parentElement = document.getElementById("purchaseButtons");
-    parentElement.appendChild(buyBuildingDiv);
-  }
+//building HTML add
+building.prototype.addHTML = function() {
+  const buyBuildingDiv = document.createElement("div");
+  buyBuildingDiv.setAttribute("class", "building-button");
+  buyBuildingDiv.innerHTML = '<button onclick="'+this.name+'Building.addBuilding()">Buy ' + this.article + ' '+capitalize(this.name)+'</button><p>Cost: <span id="'+this.name+'Cost"></span>&emsp;Owned: <span id="'+this.name+'sOwned"></span></p> <p style="font-size: 8px">'+this.value+' '+this.type+'</p>';
+  const parentElement = document.getElementById("purchaseButtons");
+  parentElement.appendChild(buyBuildingDiv);
+}
 
-  //adds one of the building, called when button is pressed
-  building.prototype.addBuilding = function() {
-    if (milk < this.cost) {
-      alert("Not enough milk!");
-    } else {
-      this.owned += 1;
-      milk -= this.cost;
-      this.cost = Math.trunc(this.baseCost * growthRate ** this.owned);
-    }
+//adds one of the building, called when button is pressed
+building.prototype.addBuilding = function() {
+  if (milk < this.cost) {
+    alerts.push(new alert("Purchase failed", "Not enough milk!"));
+  } else {
+    this.owned += 1;
+    milk -= this.cost;
+    this.cost = Math.trunc(this.baseCost * growthRate ** this.owned);
   }
+}
 
-  //update spans related to building
-  building.prototype.updateSpans = function() {
-    document.getElementById(this.name+"Cost").innerHTML = this.cost;
-    document.getElementById(this.name+"sOwned").innerHTML = this.owned;
-  }
+//update spans related to building
+building.prototype.updateSpans = function() {
+  document.getElementById(this.name+"Cost").innerHTML = this.cost;
+  document.getElementById(this.name+"sOwned").innerHTML = this.owned;
+}
 
-  //add buildings
-  var cowBuilding = new building("cow", "a", 10, "MPC", 0.1);
-  var farmhandBuilding = new building("farmhand", "a", 10, "MPS", 1);
-  var barnBuilding = new building("barn", "a", 100, "MPC", 1);
-  var milkmaidBuilding = new building("milkmaid", "a", 100, "MPS", 10);
-  var pastureBuilding = new building("pasture", "a", 1000, "MPC", 5);
-  var expertBuilding = new building("expert", "an", 1000, "MPS", 50);
+//add buildings
+var cowBuilding = new building("cow", "a", 10, "MPC", 0.1);
+var farmhandBuilding = new building("farmhand", "a", 10, "MPS", 1);
+var barnBuilding = new building("barn", "a", 100, "MPC", 1);
+var milkmaidBuilding = new building("milkmaid", "a", 100, "MPS", 10);
+var pastureBuilding = new building("pasture", "a", 1000, "MPC", 5);
+var expertBuilding = new building("expert", "an", 1000, "MPS", 50);
+
+  //////////////////
+ //    ALERTS    //
+//////////////////
+
+var alert = function(header, message) {
+  this.id = alerts.length;
+  this.header = header;
+  this.message = message;
+  this.pushAlert();
+}
+
+alert.prototype.pushAlert = function() {
+  const alertDiv = document.createElement("div");
+  alertDiv.setAttribute("class", "alert");
+  alertDiv.setAttribute("id", "alerts-" + this.id);
+  alertDiv.innerHTML = '<button onClick="alerts[' + this.id + '].delete()">X</button><h3>'+this.header+'</h3><p>'+this.message+'</p>';
+  const parentElement = document.getElementById("alertStack");
+  parentElement.appendChild(alertDiv);
+}
+
+alert.prototype.delete = function() {
+  const alertDiv = document.getElementById("alerts-" + this.id);
+  alertDiv.remove();
+}
 
 //game loop
 function loop() {
@@ -254,7 +290,7 @@ function activateMPS() {
                   expertBuilding.owned, expertBuilding.cost];
     exportString = btoa(JSON.stringify(exportData));
     navigator.clipboard.writeText(exportString);
-    alert("Game data copied to clipboard!");
+    alerts.push(new alert("Save Success", "Game data copied to clipboard!"));
   }
   function importGame() {
     let importString = prompt("Paste your save data here:");
@@ -277,7 +313,7 @@ function activateMPS() {
         expertBuilding.owned = importData[13];
         expertBuilding.cost = importData[14];
       } catch (error) {
-        alert("Error importing save data! Please make sure you pasted it correctly.");
+        alerts.push(new alert("Import Error", "Please make sure you pasted your save data correctly."));
       }
     }
   }

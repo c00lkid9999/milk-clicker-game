@@ -9,6 +9,7 @@
         <lin rel="icon" type="image/x-icon" href="Resources/milk.svg">
     </head>
     <body>
+        <!--Navbar-->
         <div id="header" class="navbar">
             <div class="left-content" id="header-left">
                 <button class="invisibleButton" onClick="switchAchiev()"><div class="small-button" style="background-color: rgb(255, 255, 100);"><img src="Resources/star.png" class="icon"></div></button>
@@ -19,6 +20,11 @@
                 <button class="invisibleButton" onClick="switchMilk()"><div class="small-button" style="background-color: #87cfeb;" onClick = "switchSettings()"><img src="Resources/milk.svg" class="icon"></div></button>
             </div>
         </div>
+
+        <!--Alert stack-->
+        <div id="alertStack" class="alert-stack"></div>
+
+        <!--Scenes-->
         <div id="milkScene" style="margin: 0px; padding: 0px; display: block;">
             <div id="milkBanner">
                 <p style="padding: 10px; font-size: 20px; text-align: center"><span id = "milkTotal"></span></p>

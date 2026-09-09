@@ -75,3 +75,37 @@ button {
     margin: 10px;
     border-radius: 8px;
 }
+
+.alert-stack {
+    display: flex;
+    flex-direction: column-reverse;
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    margin: 5px;
+    cursor: crosshair;
+    min-width: 200px;
+    width: 25%;
+    -webkit-mask-image: linear-gradient(to top, black 200px, transparent 300px);
+    mask-image: linear-gradient(to top, black 200px, transparent 300px);
+    max-height: 300px;
+    overflow: auto;
+}
+
+.alert {
+    background-color: lightgrey;
+    padding: 3px;
+    border: 3px solid black;
+    border-radius: 10px;
+    margin: 5px;
+}
+
+.alert p {
+    font-size: 12px;
+    margin: 1px;
+    padding: 1px;
+}
+
+.alert button {
+    margin: 2px;
+}

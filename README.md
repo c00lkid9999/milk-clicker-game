@@ -7,7 +7,11 @@ Play it here: https://c00lkid9999.github.io/milk-clicker-game/
 
 # Changelog
 
-### 0.4.0 - Project Resumed! (9/8/26)
+### 4.0.0 - The Alert Update (9/9/26)
+
+Replaced the current system alert system with an alert message section! Further preparation for adding Achievements.
+
+#### 0.3.2 - Project Resumed! (9/8/26)
 
 Started working on this again! Fixed some minor errors and started adding the first prestige layer! Achievements coming very soon.
 
