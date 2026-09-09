@@ -109,3 +109,25 @@ button {
 .alert button {
     margin: 2px;
 }
+
+footer {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    padding: 5px;
+    font-size: 10px;
+    background-color: #87cfeb;
+}
+
+footer img {
+    width: 17px;
+    margin: 5px;
+    padding: 2px;
+    border: 2px solid black;
+    border-radius: 5px;
+    display: block;
+    background-color: white;
+}
