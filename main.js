@@ -115,6 +115,7 @@ function loop() {
 window.onload = function() {
     setInterval(activateMPS, 1000); //starts giving milk per second
     window.requestAnimationFrame(loop);
+    switchMilk();
 }
 
 //main game function
@@ -161,7 +162,7 @@ function main() {
       const cheeseTab = document.createElement("button");
       cheeseTab.setAttribute("onclick", "switchCheese()");
       cheeseTab.setAttribute("class", "invisibleButton");
-      cheeseTab.innerHTML = '<div class="small-button" style="background-color: rgb(255, 225, 58);"><img src="Resources/cheese.png" class="icon"></div>';
+      cheeseTab.innerHTML = '<div class="small-button cheese-button"><img src="Resources/cheese.png" class="icon"></div>';
       const parentElement = document.getElementById("header-right");
       parentElement.appendChild(cheeseTab);
       unlockElements[3] = true;

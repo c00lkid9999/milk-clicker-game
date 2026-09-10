@@ -1,8 +1,21 @@
-body {
+html, body {
     font-family: 'Courier New', Courier, monospace;
     margin: 0;
     padding: 0;
+    height: 100%;
     background-color: #87cfeb;
+}
+
+.site-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+}
+
+.scene {
+    margin: 0px;
+    padding: 0px;
+    display: none;
 }
 
 button {
@@ -48,6 +61,27 @@ button {
     text-align: center;
 }
 
+/*Button colors*/
+.achiev-button {
+    background-color: rgb(255, 255, 100);
+}
+
+.stats-button {
+    background-color: rgb(252, 180, 180);
+}
+
+.settings-button {
+    background-color: rgb(153, 153, 153);
+}
+
+.milk-button {
+    background-color: #87cfeb;
+}
+
+.cheese-button {
+    background-color: rgb(255, 225, 58);
+}
+
 .flex-container {
     display: flex;
     flex-direction: row;
@@ -80,10 +114,9 @@ button {
     display: flex;
     flex-direction: column-reverse;
     position: fixed;
-    bottom: 0;
+    bottom: 35px;
     right: 0;
     margin: 5px;
-    cursor: crosshair;
     min-width: 200px;
     width: 25%;
     -webkit-mask-image: linear-gradient(to top, black 200px, transparent 300px);
@@ -113,13 +146,13 @@ button {
 footer {
     display: flex;
     justify-content: center;
-    position: fixed;
-    bottom: 0;
+    margin-top: auto;
     width: 100%;
     text-align: center;
     padding: 5px;
     font-size: 10px;
     background-color: #87cfeb;
+    height: 35px;
 }
 
 footer img {

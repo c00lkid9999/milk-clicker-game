@@ -9,15 +9,16 @@
         <lin rel="icon" type="image/x-icon" href="Resources/milk.svg">
     </head>
     <body>
+        <div class="site-wrapper">
         <!--Navbar-->
         <div id="header" class="navbar">
             <div class="left-content" id="header-left">
-                <button class="invisibleButton" onClick="switchAchiev()"><div class="small-button" style="background-color: rgb(255, 255, 100);"><img src="Resources/star.png" class="icon"></div></button>
-                <button class="invisibleButton" onClick="switchStats()"><div class="small-button" style="background-color: rgb(255, 100, 100);"><img src="Resources/line-chart.svg" class="icon"></div></button>
-                <button class="invisibleButton" onClick="switchSettings()"><div class="small-button" style="background-color: rgb(153, 153, 153);"><img src="Resources/gear.png" class="icon"></div></button>
+                <button class="invisibleButton" onClick="switchAchiev()"><div class="small-button achiev-button"><img src="Resources/star.png" class="icon"></div></button>
+                <button class="invisibleButton" onClick="switchStats()"><div class="small-button stats-button"><img src="Resources/line-chart.png" class="icon"></div></button>
+                <button class="invisibleButton" onClick="switchSettings()"><div class="small-button settings-button"><img src="Resources/gear.png" class="icon"></div></button>
             </div>
             <div class="right-content" id="header-right">
-                <button class="invisibleButton" onClick="switchMilk()"><div class="small-button" style="background-color: #87cfeb;" onClick = "switchSettings()"><img src="Resources/milk.svg" class="icon"></div></button>
+                <button class="invisibleButton" onClick="switchMilk()"><div class="small-button milk-button" onClick = "switchSettings()"><img src="Resources/milk.png" class="icon"></div></button>
             </div>
         </div>
 
@@ -25,14 +26,14 @@
         <div id="alertStack" class="alert-stack"></div>
 
         <!--Scenes-->
-        <div id="milkScene" style="margin: 0px; padding: 0px; display: block;">
+        <div id="milkScene" class="scene">
             <div id="milkBanner">
                 <p style="padding: 10px; font-size: 20px; text-align: center"><span id = "milkTotal"></span></p>
             </div>
             <button style="padding: 10px; background-color: #5dbeff;" onclick="incMilk()"><img src="Resources/cow.png" width="100px" style="display: block; margin: auto;">Get Milk</button>
             <div id="purchaseButtons" class="flex-container"></div>
         </div>
-        <div id="statsScene" style="margin: 0px; padding: 0px; display: none;">
+        <div id="statsScene" class="scene">
             <div id="statsBanner">
                 <p style="padding: 10px; font-size: 20px; text-align: center">Statistics</p>
             </div>
@@ -42,7 +43,7 @@
                 <p style="text-align: center"><span id = "totalBuildings"></span></p>
             </div>
         </div>
-        <div id="achievScene" style="margin: 0px; padding: 0px; display: none;">
+        <div id="achievScene" class="scene">
             <div id="achievBanner">
                 <p style="padding: 10px; font-size: 20px; text-align: center">Achievements</p>
             </div>
@@ -50,7 +51,7 @@
                 <p>Achievements have not yet been implemented...</p>
             </div>
         </div>
-        <div id="settingsScene" style="margin: 0px; padding: 0px; display: none;">
+        <div id="settingsScene" class="scene">
             <div id="settingsBanner">
                 <p style="padding: 10px; font-size: 20px; text-align: center">Settings</p>
             </div>
@@ -68,7 +69,7 @@
                 </div>
             </div>
         </div>
-        <div id="cheeseScene" style="margin: 0px; padding: 0px; display: none;">
+        <div id="cheeseScene" class="scene">
             <div id="cheeseBanner">
                 <p style="padding: 10px; font-size: 20px; text-align: center">Cheese</p>
             </div>
@@ -77,9 +78,11 @@
             </div>
         </div>
 
+        <!--Footer Content-->
         <footer>
             <p>© 2025-26 c00lkid9999&emsp;</p>
             <a href="https://github.com/c00lkid9999/"><img src="Resources/github.svg" width="20px"></a>
         </footer>
+        </div>
     </body>
 </html>
