@@ -7,7 +7,11 @@ Play it here: https://c00lkid9999.github.io/milk-clicker-game/
 
 # Changelog
 
-### 4.0.0 - The Alert Update (9/9/26)
+#### 0.3.4 - The Graphics Update (9/10/26)
+
+Added custom graphics instead of the old images. Fixed a few bugs.
+
+#### 0.3.3 - The Alert Update (9/9/26)
 
 Replaced the current system alert system with an alert message section! Further preparation for adding Achievements.
 
