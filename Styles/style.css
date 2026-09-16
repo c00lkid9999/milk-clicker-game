@@ -82,6 +82,26 @@ button {
     background-color: rgb(255, 225, 58);
 }
 
+.big-p {
+    padding: 10px; 
+    font-size: 20px; 
+    text-align: center;
+}
+
+.get-milk-button {
+    padding: 10px; 
+    background-color: #5dbeff;
+}
+
+.get-milk-button img {
+    display: block;
+    margin: auto;
+}
+
+.centered {
+    text-align: center;
+}
+
 .flex-container {
     display: flex;
     flex-direction: row;
@@ -108,6 +128,15 @@ button {
     font-size: 12px;
     margin: 10px;
     border-radius: 8px;
+}
+
+.info-text {
+    font-size: 10px;
+    text-align: center;
+}
+
+.info-text-small {
+    font-size: 8px;
 }
 
 .alert-stack {

@@ -1,11 +1,8 @@
 /*TODO List
  * Add alts to images
- * Add achievements
  * Finish cheese setup
- * Get rid of inline styling and add ids (I am a changed man)
  * Rewrite save structure to make it more compact????
  * Make background of cheese page cheese color
- * Make debug button more sophisticated
  * Add animations (aaaaahh scary maybe I won't do this)
  */
 
@@ -51,7 +48,7 @@ var building = function(name, article, baseCost, type, value) {
 building.prototype.addHTML = function() {
   const buyBuildingDiv = document.createElement("div");
   buyBuildingDiv.setAttribute("class", "building-button");
-  buyBuildingDiv.innerHTML = '<button onclick="'+this.name+'Building.addBuilding()">Buy ' + this.article + ' '+capitalize(this.name)+'</button><p>Cost: <span id="'+this.name+'Cost"></span>&emsp;Owned: <span id="'+this.name+'sOwned"></span></p> <p style="font-size: 8px">'+this.value+' '+this.type+'</p>';
+  buyBuildingDiv.innerHTML = '<button onclick="'+this.name+'Building.addBuilding()">Buy ' + this.article + ' '+capitalize(this.name)+'</button><p>Cost: <span id="'+this.name+'Cost"></span>&emsp;Owned: <span id="'+this.name+'sOwned"></span></p> <p class="info-text-small">'+this.value+' '+this.type+'</p>';
   const parentElement = document.getElementById("purchaseButtons");
   parentElement.appendChild(buyBuildingDiv);
 }
@@ -184,7 +181,7 @@ function main() {
         farmhandBuilding.addHTML();
         //add MPC/MPS display
         const cpxDiv = document.createElement("div");
-        cpxDiv.innerHTML = '<p style="font-size: 10px; text-align: center">MPC: <span id="MPC"></span>&emsp;MPS: <span id="MPS"></span></p>';
+        cpxDiv.innerHTML = '<p class="info-text">MPC: <span id="MPC"></span>&emsp;MPS: <span id="MPS"></span></p>';
         const parentElement = document.getElementById("milkBanner");
         parentElement.appendChild(cpxDiv);
         unlockElements[0] = true;
