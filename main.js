@@ -22,6 +22,7 @@ let cheese = 0;
 
 //stats stuff
 let totalMilk = 0;
+let totalBuildings = 0;
 let clicks = 0;
 
 //scenes and progress
@@ -60,7 +61,8 @@ building.prototype.addBuilding = function() {
   if (milk < this.cost) {
     alerts.push(new alert("Purchase failed", "Not enough milk!"));
   } else {
-    this.owned += 1;
+    this.owned++;
+    totalBuildings++;
     milk -= this.cost;
     this.cost = Math.trunc(this.baseCost * growthRate ** this.owned);
   }
@@ -104,6 +106,50 @@ alert.prototype.delete = function() {
   const alertDiv = document.getElementById("alerts-" + this.id);
   alertDiv.remove();
 }
+
+  //////////////////
+ // ACHIEVEMENTS //
+//////////////////
+
+var achievement = function(id, name, description, image, color) {
+  this.id = id;
+  this.name = name;
+  this.description = description;
+  this.image = image;
+  this.color = color;
+  this.unlocked = false;
+  this.addHTML();
+}
+
+achievement.prototype.addHTML = function() {
+  const achievementDiv = document.createElement("div");
+  achievementDiv.setAttribute("class", "achievement");
+  achievementDiv.setAttribute("id", "achiev-" + this.id);
+  achievementDiv.innerHTML = '<h3>'+this.name+'</h3><p>'+this.description+'</p>';
+  const parentElement = document.getElementById("achievContent");
+  parentElement.appendChild(achievementDiv);
+}
+
+achievement.prototype.get = function() {
+  this.unlocked = true;
+  alerts.push(new alert(this.name, this.description));
+  const achievementDiv = document.getElementById("achiev-" + this.id);
+  achievementDiv.style.backgroundColor = this.color;
+}
+
+achievement.prototype.getFromSave = function() {
+  this.unlocked = true;
+  const achievementDiv = document.getElementById("achiev-" + this.id);
+  achievementDiv.style.backgroundColor = this.color;
+}
+
+var achievements = {
+  "milk1": new achievement("milk1", "So it begins...", "Get your first milk", "", "rgb(152, 196, 255)"),
+  "milk1K": new achievement("milk1K", "Glass of Milk", "Get 1000 milk", "", "rgb(152, 196, 255)"),
+  "cpc10": new achievement("cpc10", "Clicker", "Earn 10 milk per click", "", "rgb(85, 135, 252)"),
+  "cps100": new achievement("cps100", "Idler", "Earn 100 milk per second", "", "rgb(149, 85, 252)"),
+  "build1": new achievement("build1", "Businessman", "Buy a building", "", "rgb(252, 96, 91)")
+};
 
 //game loop
 function loop() {
@@ -169,6 +215,25 @@ function main() {
     }
   }
 
+  //checks if achievements have been obtained
+  function checkAchiev() {
+    if (achievements.milk1.unlocked === false && totalMilk >= 1) {
+      achievements.milk1.get();
+    }
+    if (achievements.milk1K.unlocked === false && totalMilk >= 1000) {
+      achievements.milk1K.get();
+    }
+    if (achievements.build1.unlocked === false && totalBuildings >= 1) {
+      achievements.build1.get();
+    }
+    if (achievements.cpc10.unlocked === false && milkPerClick >= 10) {
+      achievements.cpc10.get();
+    }
+    if (achievements.cps100.unlocked === false && milkPerSecond >= 100) {
+      achievements.cps100.get();
+    }
+  }
+
   //functino to update all valid spans
   function updateSpans() {
     if (scene === 'milk') {
@@ -195,7 +260,7 @@ function main() {
     if (scene === 'stats') {
       document.getElementById("totalClicks").innerHTML = "Total Clicks: " + clicks;
       document.getElementById("totalMilk").innerHTML = "Total Milk: " + totalMilk;
-      document.getElementById("totalBuildings").innerHTML = "Total Buildings Owned: " + (cowBuilding.owned + farmhandBuilding.owned + barnBuilding.owned + milkmaidBuilding.owned + pastureBuilding.owned + expertBuilding.owned);
+      document.getElementById("totalBuildings").innerHTML = "Total Buildings Owned: " + totalBuildings;
     }
   }
 
@@ -215,11 +280,6 @@ function main() {
       totalMilk = Math.round(totalMilk * 10)/10;
       milkPerClick = Math.round(milkPerClick * 10)/10;
       milkPerSecond = Math.round(milkPerSecond);
-  }
-
-  //placeholder function, will eventually check if achievements have been earned
-  function checkAchiev() {
-      //placeholder
   }
 
 //helper function to capitalize first letter of string
@@ -282,13 +342,20 @@ function activateMPS() {
 
 //Settings Button Functions
   function exportGame() {
+    let achievArray = [];
+    for (var key in achievements) {
+      if (achievements[key].unlocked === true) {
+        achievArray.push(key);
+      }
+    }
     exportData = [milk, totalMilk, clicks, 
                   cowBuilding.owned, cowBuilding.cost, 
                   farmhandBuilding.owned, farmhandBuilding.cost, 
                   barnBuilding.owned, barnBuilding.cost, 
                   milkmaidBuilding.owned, milkmaidBuilding.cost,
                   pastureBuilding.owned, pastureBuilding.cost,
-                  expertBuilding.owned, expertBuilding.cost];
+                  expertBuilding.owned, expertBuilding.cost,
+                  achievArray];
     exportString = btoa(JSON.stringify(exportData));
     navigator.clipboard.writeText(exportString);
     alerts.push(new alert("Save Success", "Game data copied to clipboard!"));
@@ -297,24 +364,39 @@ function activateMPS() {
     let importString = prompt("Paste your save data here:");
     if (importString != null) {
       try {
-        importData = JSON.parse(atob(importString));
-        milk = importData[0];
-        totalMilk = importData[1];
-        clicks = importData[2];
-        cowBuilding.owned = importData[3];
-        cowBuilding.cost = importData[4];
-        farmhandBuilding.owned = importData[5];
-        farmhandBuilding.cost = importData[6];
-        barnBuilding.owned = importData[7];
-        barnBuilding.cost = importData[8];
-        milkmaidBuilding.owned = importData[9];
-        milkmaidBuilding.cost = importData[10];
-        pastureBuilding.owned = importData[11];
-        pastureBuilding.cost = importData[12];
-        expertBuilding.owned = importData[13];
-        expertBuilding.cost = importData[14];
+        try {
+            const decodedString = atob(importString);
+            importData = JSON.parse(decodedString);
+
+            if (!Array.isArray(importData) || importData.length < 16) {
+                throw new Error("Invalid save data structure.");
+            }
+        } catch (error) {
+            alerts.push(new alert("Import Error", "Invalid or corrupted save data. Please make sure you pasted your save data correctly."));
+            return;
+        }
+        milk = parseInt(importData[0], 10);
+        totalMilk = parseInt(importData[1], 10);
+        clicks = parseInt(importData[2], 10);
+        cowBuilding.owned = parseInt(importData[3], 10);
+        cowBuilding.cost = parseInt(importData[4], 10);
+        farmhandBuilding.owned = parseInt(importData[5], 10);
+        farmhandBuilding.cost = parseInt(importData[6], 10);
+        barnBuilding.owned = parseInt(importData[7], 10);
+        barnBuilding.cost = parseInt(importData[8], 10);
+        milkmaidBuilding.owned = parseInt(importData[9], 10);
+        milkmaidBuilding.cost = parseInt(importData[10], 10);
+        pastureBuilding.owned = parseInt(importData[11], 10);
+        pastureBuilding.cost = parseInt(importData[12], 10);
+        expertBuilding.owned = parseInt(importData[13], 10);
+        expertBuilding.cost = parseInt(importData[14], 10);
+        for (var item of importData[15]) {
+          if (Object.hasOwn(achievements, item)) {
+            achievements[item].get();
+          }
+        }
       } catch (error) {
-        alerts.push(new alert("Import Error", "Please make sure you pasted your save data correctly."));
+        alerts.push(new alert("Import Error", "Invalid or corrupted save data. Please make sure you pasted your save data correctly."));
       }
     }
   }
@@ -322,5 +404,6 @@ function activateMPS() {
     //ik that anyone can do this, it doesn't need to be secure
     if (navigator.userAgent == "c00lkid9999") {
       milk = 10000000000;
+      totalMilk = 10000000000;
     }
   }
